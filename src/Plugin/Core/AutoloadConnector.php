@@ -47,6 +47,7 @@ class AutoloadConnector
     {
         $composer = $event->getComposer();
         $composerConfig = $composer->getConfig();
+        $pluginConfig = Config::load($composer);
         $localRepository = $composer->getRepositoryManager()->getLocalRepository();
 
         foreach ($localRepository->getCanonicalPackages() as $package) {
@@ -68,7 +69,7 @@ class AutoloadConnector
                     $this->filesystem->symlink(
                         $autoloaderSourceDir . DIRECTORY_SEPARATOR . $autoloaderFileName,
                         $autoloaderTargetDir . DIRECTORY_SEPARATOR . $autoloaderFileName,
-                        false
+                        $pluginConfig->get('copy-on-symlink-failure')
                     );
                 } catch (\RuntimeException $e) {
                     if ($e->getCode() !== 1430494084) {

@@ -101,7 +101,7 @@ class Filesystem extends \Composer\Util\Filesystem
             throw new \RuntimeException('Symlinking target "' . $symlinkTarget . '" to source "' . $symlinkSource . '" ("' . $source . '")  failed.' . $additionalErrorInformation, 1430494084);
         } elseif (!$symlinkSuccessfull && $copyOnFailure) {
             try {
-                $this->copy($symlinkSource, $symlinkTarget);
+                $this->copy(strtr($source, '/', DIRECTORY_SEPARATOR), $symlinkTarget);
             } catch (\Exception $exception) {
                 throw new \RuntimeException('Neither symlinking nor copying target "' . $symlinkTarget . '" to source "' . $symlinkSource . '" ("' . $source . '") worked.' . $additionalErrorInformation, 1430494090);
             }
